@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
 const protectedRoutes = ['/']
-const publicRoutes = ['/login']
+const publicRoutes = ['/login', '/pokemons']
 
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
@@ -16,12 +16,10 @@ export default async function middleware(req: NextRequest) {
 
   if (
     isPublicRoute &&
-    token == "true"
+    token == "true" &&
+    path === "/login"
   ) {
-    if (path === '/login') {
-      return NextResponse.redirect(new URL('/', req.nextUrl))
-    }
-    return NextResponse.redirect(new URL(path, req.nextUrl))
+    return NextResponse.redirect(new URL('/', req.nextUrl))
   }
 
   return NextResponse.next()
